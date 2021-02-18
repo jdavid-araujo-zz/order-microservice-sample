@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: jdavidaraujo/test:latest
+          env:
+            - name: CLIENT_ADDRESS
+             # value: "client-service.default"
+              valueFrom:
+                configMapKeyRef:
+                  name: service-store-env
+                  key: clientAddress
+
