@@ -14,7 +14,7 @@ module.exports = {
     ecmaVersion: 11,
   },
   rules: {
-    'prettier/prettier': 'error',
+    'prettier/prettier': '',
     'class-methods-use-this': 'off',
     camelcase: 'off',
     'no-param-reassign': 'off',
