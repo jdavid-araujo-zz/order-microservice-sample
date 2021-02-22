@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const { Model } = require('sequelize');
+const Client = require('./Client')
 
 class Address extends Model {
   static init(sequelize) {

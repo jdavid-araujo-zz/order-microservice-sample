@@ -13,12 +13,13 @@ class Database {
 
   init() {
     this.connection = new Sequelize(databaseConfig);
-
+	console.log(databaseConfig)
     models
       .map((model) => model.init(this.connection))
-      .map(
-        (model) => model.associate && model.associate(this.connection.models)
-      );
+    //   .map(
+    //     (model) => model.associate && model.associate(this.connection.models)
+    //   );
+
   }
 }
 

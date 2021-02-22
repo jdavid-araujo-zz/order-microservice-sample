@@ -4,10 +4,13 @@ const Client = require('../models/Client');
 class ClientController {
 
   async findAll(req, res) {
-	  try {
+	// res.json({test: 'pass'})
+	   try {
 		let allClients = await Client.findAll();
-		allClients ? res.status(HttpStatus.StatusCodes.OK).json(allClients) : res.status(HttpStatus.StatusCodes.NO_CONTENT);
+		res.status(HttpStatus.StatusCodes.OK).json(allClients);
+
 	  } catch (error) {
+		// console.log(`${error}`)
 		res.status(HttpStatus.StatusCodes.BAD_REQUEST).json(error);
 	  }
   }
@@ -25,9 +28,14 @@ class ClientController {
   async create(req, res){
 	  try {
 		  let {name, email} = req.body;
+		  const client = await Client.create({
+			name: name,
+			email: email
+		  });
+		  res.status(HttpStatus.StatusCodes.CREATED).json(client)
 
 	  } catch (error) {
-		
+		res.status(HttpStatus.StatusCodes.BAD_REQUEST).json(error);
 	  }
   }
 
