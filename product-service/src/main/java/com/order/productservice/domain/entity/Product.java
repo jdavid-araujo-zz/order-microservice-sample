@@ -2,9 +2,7 @@ package com.order.productservice.domain.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Data
@@ -18,4 +16,8 @@ public class Product {
     private String name;
 
     private BigDecimal price;
+
+    @ManyToOne
+    private Category category;
+
 }
