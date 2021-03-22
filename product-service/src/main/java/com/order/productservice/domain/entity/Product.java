@@ -24,7 +24,7 @@ public class Product {
     private String name;
 
     @NotNull
-    private BigDecimal price;
+    private BigDecimal value;
 
     @ManyToOne
     private Category category;
