@@ -4,3 +4,5 @@ metadata:
   name: service-store-env
 data:
   clientAddress: 'client-service.default'
+  productAddress: 'product-service.default'
+

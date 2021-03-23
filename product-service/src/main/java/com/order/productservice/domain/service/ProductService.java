@@ -4,6 +4,7 @@ package com.order.productservice.domain.service;
 import com.order.productservice.domain.entity.Product;
 import com.order.productservice.domain.exception.NegocioException;
 import com.order.productservice.domain.repository.ProductRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -27,11 +28,16 @@ public class ProductService {
         }
     }
 
-    public void update(Long id, Product product) {
-        if(!this.isExist(id)) {
+    public void update(Long id, Product entity) {
+        if (!this.isExist(id)) {
             throw new NegocioException(String.format("Product does not found with the id: %d", id));
         }
 
+        Product product = this.findById(id);
+
+        BeanUtils.copyProperties(entity, product, "id");
+
+        this.save(product);
     }
 
     public List<Product> findAll() {
@@ -39,11 +45,15 @@ public class ProductService {
     }
 
     public Product findById(Long id) {
-        if(!this.isExist(id)) {
+        if (!this.isExist(id)) {
             throw new NegocioException(String.format("Product does not found with the id: %d", id));
         }
 
-        return this.productRepository.findById(id).orElseThrow(() -> new NegocioException(String.format("It was not possible to proceed with the operation for the product with id: %d", id)));
+        return this.productRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> new NegocioException(String.format("It was not possible to proceed with the operation for the product with id: %d", id))
+                );
     }
 
     private boolean isExist(Long id) {

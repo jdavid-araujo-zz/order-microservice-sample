@@ -3,7 +3,7 @@ package com.order.productservice.domain.service;
 import com.order.productservice.domain.entity.Category;
 import com.order.productservice.domain.exception.NegocioException;
 import com.order.productservice.domain.repository.CategoryRepository;
-import net.bytebuddy.implementation.bytecode.Throw;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -19,16 +19,24 @@ public class CategoryService {
 
     private CategoryRepository categoryRepository;
 
-    public void save(Category category) {
+    public void save(Category entity) {
         try {
-            this.categoryRepository.save(category);
+            this.categoryRepository.save(entity);
         } catch (Exception e) {
             throw new NegocioException(messageSource.getMessage("operation.failed", null, LocaleContextHolder.getLocale()));
         }
     }
 
-    public void update(Long id, Category category) {
+    public void update(Long id, Category entity) {
+        if (!this.isExist(id)) {
+            throw new NegocioException(String.format("Categoty does not found with the id: %d", id));
+        }
 
+        Category category = this.findById(id);
+
+        BeanUtils.copyProperties(entity, category, "id");
+
+        this.save(category);
     }
 
     public List<Category> findAll() {
@@ -36,7 +44,7 @@ public class CategoryService {
     }
 
     public Category findById(Long id) {
-        if(!this.isExist(id)) {
+        if (!this.isExist(id)) {
             throw new NegocioException(String.format("Categoty does not found with the id: %d", id));
         }
 
